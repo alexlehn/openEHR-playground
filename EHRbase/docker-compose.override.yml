@@ -1,0 +1,39 @@
+version: "3"
+
+
+
+services:
+
+  ehrbase:
+    environment:
+      # Security @see https://ehrbase.readthedocs.io/en/latest/03_development/04_docker_images/01_ehrbase/02_use_image/index.html#run-ehrbase-db-with-docker-compose
+      SECURITY_AUTHTYPE: "NONE" # could be basic but requires
+      # SECURITY_AUTHTYPE: "BASIC"
+      # SECURITY_AUTHUSER: "user"
+      # SECURITY_AUTHPASSWORD: "let_me_in"
+      # SECURITY_AUTHADMINUSER: "admin"
+      # SECURITY_AUTHADMINPASSWORD: "top_secret"
+      MANAGEMENT_ENDPOINTS_WEB_ACCESS: "PUBLIC"         # FIXME move to override.yml and keep or define "ADMIN_ONLY"
+      MANAGEMENT_ENDPOINT_ENV_ENABLED: "true"
+      MANAGEMENT_ENDPOINT_HEALTH_SHOW_COMPONENTS: "always"
+      MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS: "always"
+      MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED: "true"
+      MANAGEMENT_ENDPOINT_INFO_ENABLED: "true"
+      # Expose admin for dev
+      ADMIN_API_ACTIVE: "true"
+      ADMIN_API_ALLOWDELETEALL: "true"
+    restart: "no" # dead is dead
+
+  postgres:
+    ports:
+      - "5432:5432"
+    networks:
+      - external
+    restart: "no" # dead is dead
+
+  redis:
+    ports:
+      - "6379:6379"
+    networks:
+      - external
+    restart: "no" # dead is dead
